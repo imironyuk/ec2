@@ -11,12 +11,29 @@ waiter = client.get_waiter('instance_status_ok')
 instance = ec2.Instance('id')
 email_send = 'daniilmironyuk@gmail.com'
 
+print('                                                                                              ')
+print('░█████╗░░██╗░░░░░░░██╗░██████╗  ██╗███╗░░██╗░██████╗████████╗░█████╗░███╗░░██╗░█████╗░███████╗')
+print('██╔══██╗░██║░░██╗░░██║██╔════╝  ██║████╗░██║██╔════╝╚══██╔══╝██╔══██╗████╗░██║██╔══██╗██╔════╝')
+print('███████║░╚██╗████╗██╔╝╚█████╗░  ██║██╔██╗██║╚█████╗░░░░██║░░░███████║██╔██╗██║██║░░╚═╝█████╗░░')
+print('██╔══██║░░████╔═████║░░╚═══██╗  ██║██║╚████║░╚═══██╗░░░██║░░░██╔══██║██║╚████║██║░░██╗██╔══╝░░')
+print('██║░░██║░░╚██╔╝░╚██╔╝░██████╔╝  ██║██║░╚███║██████╔╝░░░██║░░░██║░░██║██║░╚███║╚█████╔╝███████╗')
+print('╚═╝░░╚═╝░░░╚═╝░░░╚═╝░░╚═════╝░  ╚═╝╚═╝░░╚══╝╚═════╝░░░░╚═╝░░░╚═╝░░╚═╝╚═╝░░╚══╝░╚════╝░╚══════╝')
+print('                                                                                              ')
+print('   Version:     0.0.2                                                                         ')
+print('   Author:      imironyuk                                                                     ')
+print('   Licensed to: MDI                                                                           ')
+print('                                                                                              ')
+
 print('Getting the default VPC ID')
 response = client.describe_vpcs()
 vpc_id = response.get('Vpcs', [{}])[0].get('VpcId', '')
 print('VPC ID: %s' % (vpc_id))
 
-btcusd_sg = client.describe_security_groups(GroupNames=['BTCUSD'])
+try:
+    btcusd_sg = client.describe_security_groups(GroupNames=['BTCUSD'])
+except:
+    btcusd_sg = ''
+    
 if btcusd_sg != '':
     security_group_id = btcusd_sg.get('SecurityGroups', [{}])[0].get('GroupId', '')
     print('Security Group BTCUSD already exist %s' % (security_group_id))
@@ -43,7 +60,7 @@ keypair_name = datetime.datetime.today().strftime("%d.%m.%Y_%H:%M_") + email_sen
 new_keypair = ec2.create_key_pair(KeyName=keypair_name)
 with open(keypair_name, 'w') as file:
     file.write(new_keypair.key_material)
-print('Create keypair in EC2 ' + keypair_name)
+print('Create keypair ' + keypair_name)
 print('Create new EC2 instance')
 
 new_instance = ec2.create_instances(
