@@ -5,25 +5,27 @@ import datetime
 import os
 from botocore.exceptions import ClientError
 
-region_name = "us-east-1"
 ec2 = boto3.resource('ec2')
 client = boto3.client('ec2')
 waiter = client.get_waiter('instance_status_ok')
 instance = ec2.Instance('id')
 email_send = 'daniilmironyuk@gmail.com'
+
+print('Getting the default VPC ID')
 response = client.describe_vpcs()
 vpc_id = response.get('Vpcs', [{}])[0].get('VpcId', '')
+print('VPC ID: %s' % (vpc_id))
 
 btcusd_sg = client.describe_security_groups(GroupNames=['BTCUSD'])
 if btcusd_sg != '':
     security_group_id = btcusd_sg.get('SecurityGroups', [{}])[0].get('GroupId', '')
-    print('Security Group BTCUSD already exist %s in vpc %s.' % (security_group_id, vpc_id))
+    print('Security Group BTCUSD already exist %s' % (security_group_id))
 else:
     response_sg_id = client.create_security_group(GroupName='BTCUSD',
                                                   Description='DESCRIPTION',
                                                   VpcId=vpc_id)
     security_group_id = response_sg_id['GroupId']
-    print('Security Group Created %s in vpc %s.' % (security_group_id, vpc_id))
+    print('Security Group Created %s' % (security_group_id))
     data = client.authorize_security_group_ingress(
          GroupId=security_group_id,
          IpPermissions=[
