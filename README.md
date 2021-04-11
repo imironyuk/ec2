@@ -1,4 +1,3 @@
-### Requirements
 
 1. Install and configure AWS CLI according to the [official guide](https://docs.aws.amazon.com/cli/latest/userguide/install-cliv2.html)
 2. Install Python 3.9 or older version
@@ -20,3 +19,8 @@
    6. Create `reload.sh` script which pick up changes from GIT and refresh the page
    7. Setup `crontab` which will pick up changes from GIT every minute and refresh the page (runs `reload.sh` once per minute)
    8. Displays the link that will be used to access our page
+
+### Contacts of the creator
+- GitHub: [MDI](https://github.com/imironyuk)
+- VK: [Daniil Mironuyk](https://vk.com/daniilmironyuk)
+- Email: `daniilmironyuk@gmail.com`
